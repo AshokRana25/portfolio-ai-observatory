@@ -1,5 +1,7 @@
 # Portfolio AI Observatory
 
+[![Quality checks](https://github.com/AshokRana25/portfolio-ai-observatory/actions/workflows/ci.yml/badge.svg)](https://github.com/AshokRana25/portfolio-ai-observatory/actions/workflows/ci.yml)
+
 **An evidence-backed project portfolio assistant built with LangChain, Langfuse, and FastAPI.**
 
 Ask which projects are forecast over budget, inspect delivery risks, and trace answers back to fictional source records. This architecture demonstration connects business portfolio questions to observable AI execution.

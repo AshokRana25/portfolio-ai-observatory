@@ -9,7 +9,7 @@ description = "Evidence-backed project portfolio assistant with LangChain and La
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "langchain-core>=1,<2",
+  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "langchain>=1,<2", "langchain-core>=1,<2",
   "langchain-openai>=1,<2", "langfuse>=4,<5", "python-dotenv>=1,<2"
 ]
 
