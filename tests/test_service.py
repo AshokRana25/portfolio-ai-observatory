@@ -4,7 +4,11 @@ import pytest
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
 
 from observatory.service import (
-    ABSTENTION, PortfolioAssistant, Settings, load_projects, validate_citations,
+    ABSTENTION,
+    PortfolioAssistant,
+    Settings,
+    load_projects,
+    validate_citations,
 )
 
 
