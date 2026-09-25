@@ -1,0 +1,6 @@
+[
+  {"id":"PRJ-101","name":"Atlas Commerce","status":"Amber","budget":120000,"forecast":138000,"currency":"USD","risk":"Payment integration delays threaten the release milestone.","mitigation":"Complete provider contract tests before release.","milestone":"Checkout integration","due":"2026-10-15"},
+  {"id":"PRJ-102","name":"Beacon Analytics","status":"Green","budget":95000,"forecast":90000,"currency":"USD","risk":"Source data quality requires monitoring.","mitigation":"Run daily schema and freshness checks.","milestone":"Reporting pilot","due":"2026-10-30"},
+  {"id":"PRJ-103","name":"Cedar Claims","status":"Red","budget":160000,"forecast":196000,"currency":"USD","risk":"Duplicate integration messages can create repeated claim tasks.","mitigation":"Introduce idempotency keys and a replay queue.","milestone":"Claims workflow pilot","due":"2026-11-10"},
+  {"id":"PRJ-104","name":"Delta Identity","status":"Green","budget":80000,"forecast":80000,"currency":"USD","risk":"Access reviews depend on timely owner responses.","mitigation":"Schedule review reminders and escalation ownership.","milestone":"Access review rollout","due":"2026-11-20"}
+]

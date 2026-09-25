@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio AI Observatory</title>
+<style>
+:root{font-family:Inter,Segoe UI,system-ui,sans-serif;color:#172b35;background:#f4f6f7;line-height:1.6}
+*{box-sizing:border-box}body{margin:0}header{background:#112f38;color:#e8f3f4;padding:22px 6%;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-weight:700;letter-spacing:.04em}.tag{font-size:12px;padding:5px 12px;border:1px solid #729a9b;border-radius:30px}main{max-width:1200px;margin:auto;padding:42px 28px}.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#367477;font-weight:700}h1{font-size:clamp(30px,4vw,46px);line-height:1.16;letter-spacing:-.04em;margin:12px 0}p{color:#526872}.intro{max-width:690px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:30px 0}.metric,.panel{background:white;border:1px solid #dce5e7;border-radius:14px}.metric{padding:20px}.metric span{display:block;color:#526872;font-size:13px}.metric strong{font-size:26px}.grid{display:grid;grid-template-columns:1.3fr 1fr;gap:22px}.panel{padding:25px}h2{font-size:19px;margin:0 0 5px}.muted{font-size:13px;color:#667b84}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}button{font:inherit;cursor:pointer}.chip{background:#f4f8f8;border:1px solid #d5e2e3;border-radius:8px;padding:8px 11px;font-size:12px;color:#254d52}label{display:block;font-size:13px;font-weight:600;margin-bottom:8px}textarea{font:inherit;width:100%;min-height:100px;padding:13px;border:1px solid #b9ced0;border-radius:9px;resize:vertical}textarea:focus,button:focus-visible{outline:3px solid #80b7b5;outline-offset:2px}.primary{background:#14635f;border:0;color:white;border-radius:8px;padding:11px 20px;margin-top:12px;font-weight:600}button:disabled{opacity:.5;cursor:wait}#answer{white-space:pre-wrap;font-size:14px;line-height:1.8;margin-top:24px}.project{padding:18px 0;border-bottom:1px solid #edf0f1}.project:last-child{border-bottom:0}.row{display:flex;justify-content:space-between;gap:12px}.status{font-size:11px;font-weight:700;border-radius:20px;padding:2px 10px;align-self:start}.Green{background:#e5f4e9;color:#26603b}.Amber{background:#fff1d6;color:#875800}.Red{background:#ffe6e3;color:#a53426}.project small{color:#647880}.sources{font-size:12px;padding-top:12px;color:#367477}footer{margin-top:28px;font-size:12px;color:#667b84}a{color:#14635f}#error{color:#a53426} @media(max-width:800px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}main{padding:26px 18px}header{padding:18px} .brand{font-size:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand">◈ &nbsp; PORTFOLIO AI OBSERVATORY</div><span class="tag" id="mode">Connecting…</span></header>
+<main>
+<div class="eyebrow">Project intelligence · Architecture demonstration</div>
+<h1>See the risk.<br>Understand the evidence.</h1>
+<p class="intro">Explore budgets, delivery risks, and milestones across a fictional project portfolio. Every supported response links back to its source records.</p>
+<section class="metrics" aria-label="Portfolio metrics">
+<div class="metric"><span>Active projects</span><strong id="count">—</strong></div>
+<div class="metric"><span>Total budget · USD</span><strong id="budget">—</strong></div>
+<div class="metric"><span>Total forecast · USD</span><strong id="forecast">—</strong></div>
+<div class="metric"><span>Forecast over budget</span><strong id="over">—</strong></div>
+</section>
+<div class="grid">
+<section class="panel"><h2>Ask the portfolio</h2><div class="muted" id="explanation">Loading configuration…</div>
+<div class="chips"><button class="chip" data-question="Which projects are forecast over budget?">Budget pressure</button><button class="chip" data-question="What are the risks and mitigations for Cedar Claims?">Cedar Claims risks</button><button class="chip" data-question="Summarize project milestones.">Upcoming milestones</button></div>
+<form id="ask-form"><label for="question">Your question</label><textarea id="question" maxlength="2000" required>Which projects are forecast over budget?</textarea><button class="primary" id="submit">Analyze portfolio →</button></form>
+<div id="error" role="alert"></div><div id="answer" aria-live="polite">Choose a suggested question or ask about a project to begin.</div><div id="sources" class="sources"></div><div id="timing" class="muted"></div>
+</section>
+<section class="panel"><h2>Source portfolio</h2><div class="muted">Four fictional projects · All amounts in USD</div><div id="projects"></div></section>
+</div>
+<footer>Built with LangChain, Langfuse &amp; FastAPI. Synthetic data only. Citation checks validate IDs, not factual accuracy. <a href="/docs">Explore the API</a>.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(n);
+async function json(url,options){const r=await fetch(url,options);if(!r.ok)throw new Error('Request failed. Check the server configuration and try again.');return r.json()}
+async function init(){try{const [health,projects]=await Promise.all([json('/api/health'),json('/api/projects')]);$('mode').textContent=health.mode==='demo'?'LOCAL DEMO · NO MODEL CALLS':'LIVE AI';$('explanation').textContent=health.mode==='demo'?'Demo mode renders matching records; no AI inference or API key required.':'Live responses use LangChain. '+(health.tracing?'Langfuse tracing is enabled.':'Tracing is disabled.');$('count').textContent=projects.length;$('budget').textContent=money(projects.reduce((n,p)=>n+p.budget,0));$('forecast').textContent=money(projects.reduce((n,p)=>n+p.forecast,0));$('over').textContent=projects.filter(p=>p.forecast_variance>0).length;for(const p of projects){const card=document.createElement('div');card.className='project';const row=document.createElement('div');row.className='row';const name=document.createElement('strong');name.textContent=p.name;const status=document.createElement('span');status.className='status '+p.status;status.textContent=p.status;row.append(name,status);const meta=document.createElement('small');meta.textContent=p.id+' · Budget $'+money(p.budget)+' · Forecast $'+money(p.forecast);const risk=document.createElement('div');risk.className='muted';risk.textContent=p.risk;card.append(row,meta,risk);$('projects').append(card)}}catch(e){$('error').textContent=e.message;$('mode').textContent='Unavailable'}}
+document.querySelectorAll('[data-question]').forEach(b=>b.onclick=()=>{$('question').value=b.dataset.question;$('question').focus()});
+$('ask-form').onsubmit=async e=>{e.preventDefault();if(!$('question').value.trim())return;$('submit').disabled=true;$('error').textContent='';$('answer').textContent='Analyzing the source records…';$('sources').textContent='';$('timing').textContent='';try{const r=await json('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('question').value})});$('answer').textContent=r.answer;$('sources').textContent=r.sources.length?'Sources: '+r.sources.map(p=>p.id+' · '+p.name).join(' | '):'No supporting sources';$('timing').textContent=r.elapsed_ms+' ms · '+r.mode+' mode'+(r.trace_id?' · Trace '+r.trace_id:'')}catch(e){$('answer').textContent='';$('error').textContent=e.message}finally{$('submit').disabled=false}};init();
+</script>
+</body></html>
